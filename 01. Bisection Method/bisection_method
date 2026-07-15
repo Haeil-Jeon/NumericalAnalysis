@@ -1,0 +1,52 @@
+
+# Bisection Method
+f = lambda x: x**3 + 4*x**2 -10 # 함수 f 정의
+a, b = 1, 2 # 중간값정리를 만족하는 초기값 설정
+c = (a+b)/2 # 초기값의 중간점 계산
+n=int(input("시행횟수 입력 :"))
+
+print("iter:1", a,c,b)
+
+for k in range(2, n+1):
+  if (f(c) ==0): #  |(f(a)==0)|(f(b)==0)
+    print("Exact root :", a,f(a),b,f(b),c,f(c))
+    break
+  elif f(a)*f(c)<0:
+    b = c
+    c = (a+b)/2
+  else:
+    a = c
+    c = (a+b)/2
+
+  print("iter:{}".format(k), a,c,b)
+
+# 정확도 및 오차 계산
+f = lambda x: x**3 + 4*x**2 -10 
+a, b = 1, 2 
+c = (a+b)/2
+n=int(input("시행횟수 입력 :"))
+
+c_list = [a] # 두 연속한 추정치를 잴 때 n=1일때는 잴 방법이 없어서 a,b 아무거나 하나 추가
+c_list.append(c)
+
+err_b=(b-a)/2**n #Error Bound
+
+for k in range(2, n+1):
+  if (f(c) ==0): #  |(f(a)==0)|(f(b)==0)
+    print("Exact root :", a,f(a),b,f(b),c,f(c))
+    break
+  elif f(a)*f(c)<0:
+    b = c
+    c = (a+b)/2
+  else:
+    a = c
+    c = (a+b)/2
+  c_list.append(c)
+  rel_error = abs(c_list[-1]-c_list[-2])/abs(c_list[-1])
+  print("iter:{}".format(k), "Relative Error:{}".format(round(rel_error,13)))
+
+r=1.3652300134141 #실제 근
+
+print("최대 오차 : {}".format(err_b))
+print("실제 오차 : {}".format(abs(r-c_list[-1])))
+
